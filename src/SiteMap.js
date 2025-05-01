@@ -68,7 +68,7 @@ export default function SiteMap() {
 
   // load GeoJSON
   useEffect(() => {
-    fetch('/sites.geojson')
+    fetch(`${process.env.PUBLIC_URL}/sites.geojson`)
       .then(r => r.json())
       .then(raw => {
         raw.features.forEach(f =>
@@ -217,6 +217,22 @@ export default function SiteMap() {
     return id ? timelineSegments.find(s => s.id === id) : null;
   }, [hoveredSegment, selectedPeriod]);
 
+  const originalSiteFeat = selectedSite
+  ? data.features.find(f => f.properties.site === selectedSite)
+  : null;
+
+  const originalBuildings = originalSiteFeat
+    ? originalSiteFeat.properties.buildings
+    : [];
+
+  const visibleDocIds = new Set(
+    // these are the ones that passed your filters
+    filteredData.features
+      .find(f => f.properties.site === selectedSite)
+      ?.properties.buildings
+      .map(b => b.doc_id) || []
+  );
+
   return (
     <div style={{
       position: 'relative', height: '100vh',
@@ -238,7 +254,7 @@ export default function SiteMap() {
         {['order','morphology','age'].map(attr => (
           <div key={attr}>
             <button onClick={() => toggleDropdown(attr)} style={headerStyle}>
-              {attr[0].toUpperCase() + attr.slice(1)} {dropdownOpen[attr] ? '▲' : '▼'}
+            {attr === 'morphology' ? 'Typology' : attr[0].toUpperCase() + attr.slice(1)} {dropdownOpen[attr] ? '▲' : '▼'}
             </button>
             {dropdownOpen[attr] && allOptions[attr].map(v => (
               <button key={v} onClick={() => toggleFilter(attr, v)}
@@ -283,16 +299,26 @@ export default function SiteMap() {
           <>
             <h3 style={{ marginBottom: 8 }}>{siteFeat.properties.site}</h3>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {siteFeat.properties.buildings.map(b => (
-                <li key={b.doc_id} style={{ marginBottom: 6 }}>
-                  <button
-                    onClick={() => setSelectedBuildingDocId(b.doc_id)}
-                    style={{ ...buttonStyle, background: '#eee', color: '#333' }}
-                  >
-                    {b.id} <small>({b.doc_id})</small>
-                  </button>
-                </li>
-              ))}
+              {originalBuildings.map(b => {
+                const isVisible = visibleDocIds.has(b.doc_id);
+                return (
+                  <li key={b.doc_id} style={{ marginBottom: 6 }}>
+                    <button
+                      onClick={() => isVisible && setSelectedBuildingDocId(b.doc_id)}
+                      disabled={!isVisible}
+                      style={{
+                        ...buttonStyle,
+                        background: isVisible ? '#eee' : '#f5f5f5',
+                        color: isVisible ? '#333' : '#aaa',
+                        cursor: isVisible ? 'pointer' : 'not-allowed',
+                        border: isVisible ? 'none' : '1px solid #ddd'
+                      }}
+                    >
+                      {b.id} <small>({b.doc_id})</small>
+                    </button>
+                  </li>
+                );
+              })}
             </ul>
           </>
         )}
@@ -305,7 +331,7 @@ export default function SiteMap() {
             {['order','morphology','age'].map(attr =>
               buildingObj[attr]?.length > 0 && (
                 <div key={attr} style={{ marginBottom: 10 }}>
-                  <strong style={{ textTransform: 'capitalize' }}>{attr}:</strong>
+                 <strong style={{ textTransform: 'capitalize' }}>{attr === 'morphology' ? 'Typology' : attr[0].toUpperCase() + attr.slice(1)}:</strong>
                   <div style={{ marginTop: 4 }}>
                     {buildingObj[attr].map(v => (
                       <button key={v} onClick={() => toggleFilter(attr, v)}

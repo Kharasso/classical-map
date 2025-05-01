@@ -24,7 +24,7 @@ const timelineSegments = [
 const MIN_YEAR = Math.min(...timelineSegments.map(s => s.start));
 const MAX_YEAR = Math.max(...timelineSegments.map(s => s.end));
 const TOTAL_SPAN = MAX_YEAR - MIN_YEAR;
-const PANEL_WIDTH = 400;
+const PANEL_WIDTH = 360;
 const TIMELINE_MARGIN = 50;
 
 // allowed morphology filter values

@@ -1,0 +1,143 @@
+/* src/SiteMap.css */
+
+/* Container for the filter controls and timeline */
+.filter-panel {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    z-index: 1;
+  }
+  
+  .filter-panel button {
+    margin: 4px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+    font-size: 0.9rem;
+  }
+  
+  .filter-panel .header-btn {
+    background: #f0f0f0;
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .filter-panel .dropdown-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+  
+  .filter-panel .dropdown-list button {
+    background: #eee;
+    color: #333;
+  }
+  
+  .filter-panel .dropdown-list button.selected {
+    background: #007cbf;
+    color: #fff;
+  }
+  
+  /* Timeline at bottom of filter panel */
+  .timeline-bar {
+    margin-top: 10px;
+    display: flex;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  
+  .timeline-bar .segment {
+    flex: 1;
+    padding: 6px;
+    text-align: center;
+    cursor: pointer;
+    background: #f8f8f8;
+    color: #333;
+    transition: background 0.2s, color 0.2s;
+  }
+  
+  .timeline-bar .segment.active {
+    background: #007cbf;
+    color: #fff;
+  }
+  
+  /* Sliding detail panel */
+  .detail-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 320px;
+    height: 100%;
+    background: #fafafa;
+    border-left: 1px solid #ddd;
+    transition: transform 0.3s ease;
+    padding: 16px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    z-index: 2;
+  }
+  
+  .detail-panel.hidden {
+    transform: translateX(100%);
+  }
+  
+  .detail-panel.visible {
+    transform: translateX(0);
+  }
+  
+  .detail-panel button {
+    margin: 4px;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .detail-panel button.exit-btn {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background: #ddd;
+    color: #333;
+  }
+  
+  .detail-panel .building-list button {
+    background: #eee;
+    color: #333;
+  }
+  
+  .detail-panel .building-list button.selected {
+    background: #007cbf;
+    color: #fff;
+  }
+  
+  .detail-panel .attribute-group {
+    margin-bottom: 10px;
+  }
+  
+  .detail-panel .attribute-group strong {
+    text-transform: capitalize;
+  }
+  
+  .detail-panel .attribute-group .attr-buttons button {
+    margin: 4px;
+  }
+  
+  .detail-panel .attribute-group .attr-buttons button.selected {
+    background: #007cbf;
+    color: #fff;
+  }
+  
+  .detail-panel a.doc-link {
+    color: #007cbf;
+    text-decoration: none;
+  }
+  

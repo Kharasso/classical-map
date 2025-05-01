@@ -34,13 +34,59 @@ const allowedMorphologies = [
   'octastyle', 'nonastyle', 'peristyle', 'linear', 'U-shape', 'L-shape'
 ];
 
+// const buttonStyle = {
+//   margin: 4, padding: '8px 14px', border: 'none', borderRadius: '6px',
+//   cursor: 'pointer', transition: 'background 0.3s, color 0.3s', fontSize: '0.9rem'
+// };
+// const headerStyle = {
+//   ...buttonStyle, background: '#f0f0f0', color: '#333', fontWeight: 'bold'
+// };
+// 1) Shared button base
+const baseButton = {
+  margin: 4,
+  padding: '8px 16px',
+  border: '1px solid var(--color-border)',
+  borderRadius: '8px',
+  fontSize: '0.9rem',
+  fontFamily: 'var(--font-base)',
+  transition: 'background 0.2s, border-color 0.2s, color 0.2s',
+};
+
+// 2) Variants
 const buttonStyle = {
-  margin: 4, padding: '8px 14px', border: 'none', borderRadius: '6px',
-  cursor: 'pointer', transition: 'background 0.3s, color 0.3s', fontSize: '0.9rem'
+  ...baseButton,
+  background: 'var(--color-surface)',
+  color:      'var(--color-text)',
+  cursor:     'pointer',
 };
+
+const buttonPrimary = {
+  ...baseButton,
+  background: 'var(--color-primary)',
+  border:     '1px solid var(--color-primary)',
+  color:      '#fff',
+};
+
+const buttonPrimaryHover = {
+  background: 'var(--color-primary-2)',
+  border:     '1px solid var(--color-primary-2)',
+};
+
+const buttonDisabled = {
+  ...baseButton,
+  background: 'var(--color-bg)',
+  color:      'var(--color-inactive)',
+  cursor:     'not-allowed',
+};
+
+// 3) Header / dropdown toggles
 const headerStyle = {
-  ...buttonStyle, background: '#f0f0f0', color: '#333', fontWeight: 'bold'
+  ...buttonStyle,
+  fontWeight: 500,
+  padding:    '10px 18px',
 };
+
+
 
 export default function SiteMap() {
   const mapContainer = useRef(null), map = useRef(null);
@@ -63,8 +109,12 @@ export default function SiteMap() {
     age: false,
   });
 
-  const inactiveColor = '#aaa';
-  const activeColor = '#007cbf';
+  // const inactiveColor = '#aaa';
+  // const activeColor = '#007cbf';
+
+    // 4) Timeline & dot colors
+  const inactiveColor = 'var(--color-inactive)';
+  const activeColor   = 'var(--color-primary)';
 
   // load GeoJSON
   useEffect(() => {
@@ -242,13 +292,21 @@ export default function SiteMap() {
 
       {/* FILTER PANEL */}
       <div style={{
-        position: 'absolute', top: 10, left: 10, background: '#fff',
-        padding: '10px', borderRadius: '8px',
-        boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+        // position: 'absolute', top: 10, left: 10, background: '#fff',
+        // padding: '10px', borderRadius: '8px',
+        // boxShadow: '0 2px 6px rgba(0,0,0,0.15)',
+        // maxWidth: '30%', zIndex: 1
+        position: 'absolute', top: 10, left: 10, background: 'var(--color-surface)',
+        padding: '10px', borderRadius: '10px',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
         maxWidth: '30%', zIndex: 1
       }}>
         <button onClick={clearFilters}
-          style={{ ...buttonStyle, background: '#eee', color: '#333' }}>
+          // style={{ ...buttonStyle, background: '#eee', color: '#333' }}>
+          // style={buttonPrimary}
+          // onMouseEnter={e => Object.assign(e.target.style, buttonPrimaryHover)}
+          // onMouseLeave={e => Object.assign(e.target.style, buttonPrimary)}>
+          style={buttonStyle}>
           Clear Filters
         </button>
         {['order','morphology','age'].map(attr => (
@@ -258,11 +316,22 @@ export default function SiteMap() {
             </button>
             {dropdownOpen[attr] && allOptions[attr].map(v => (
               <button key={v} onClick={() => toggleFilter(attr, v)}
-                style={{
-                  ...buttonStyle,
-                  background: filters[attr].has(v) ? activeColor : '#eee',
-                  color: filters[attr].has(v) ? '#fff' : '#333'
-                }}>
+                // style={{
+                //   ...buttonStyle,
+                //   background: filters[attr].has(v) ? activeColor : '#eee',
+                //   color: filters[attr].has(v) ? '#fff' : '#333'
+                // }}>
+                style={
+                  filters[attr].has(v)
+                      ? { ...buttonPrimary }
+                      : { ...buttonStyle }
+                  }
+                  onMouseEnter={e => filters[attr].has(v)
+                      ? Object.assign(e.target.style, buttonPrimaryHover)
+                      : null}
+                  onMouseLeave={e => filters[attr].has(v)
+                      ? Object.assign(e.target.style, buttonPrimary)
+                      : null}>
                 {v}
               </button>
             ))}
@@ -287,10 +356,16 @@ export default function SiteMap() {
         transition: 'transform 0.3s ease', padding: '16px',
         boxSizing: 'border-box', overflowY: 'auto', zIndex: 2
       }}>
-        <button onClick={exitSite} style={{
+        {/* <button onClick={exitSite} style={{
           ...buttonStyle, position: 'absolute', bottom: 20, left: 20,
           background: '#ddd', color: '#333'
+        }}>Exit Site</button> */}
+        <button onClick={exitSite} style={{
+          ...buttonStyle, position: 'absolute', bottom: 20, left: 20,
+          // background: '#ddd', 
+          color: '#333'
         }}>Exit Site</button>
+
 
         {!siteFeat && <div style={{ marginTop: 40 }}>Select a site to view details</div>}
 
@@ -306,13 +381,16 @@ export default function SiteMap() {
                     <button
                       onClick={() => isVisible && setSelectedBuildingDocId(b.doc_id)}
                       disabled={!isVisible}
-                      style={{
-                        ...buttonStyle,
-                        background: isVisible ? '#eee' : '#f5f5f5',
-                        color: isVisible ? '#333' : '#aaa',
-                        cursor: isVisible ? 'pointer' : 'not-allowed',
-                        border: isVisible ? 'none' : '1px solid #ddd'
-                      }}
+                      style={
+                        // ...buttonStyle,
+                        // background: isVisible ? '#eee' : '#f5f5f5',
+                        // color: isVisible ? '#333' : '#aaa',
+                        // cursor: isVisible ? 'pointer' : 'not-allowed',
+                        // border: isVisible ? 'none' : '1px solid #ddd'
+                        isVisible
+                        ? buttonStyle
+                        : buttonDisabled
+                      }
                     >
                       {b.id} <small>({b.doc_id})</small>
                     </button>
@@ -334,13 +412,26 @@ export default function SiteMap() {
                  <strong style={{ textTransform: 'capitalize' }}>{attr === 'morphology' ? 'Typology' : attr[0].toUpperCase() + attr.slice(1)}:</strong>
                   <div style={{ marginTop: 4 }}>
                     {buildingObj[attr].map(v => (
-                      <button key={v} onClick={() => toggleFilter(attr, v)}
-                        style={{
-                          ...buttonStyle,
-                          background: filters[attr].has(v) ? activeColor : '#eee',
-                          color: filters[attr].has(v) ? '#fff' : '#333'
-                        }}>
-                        {v}
+                      // <button key={v} onClick={() => toggleFilter(attr, v)}
+                      //   style={{
+                      //     ...buttonStyle,
+                      //     background: filters[attr].has(v) ? activeColor : '#eee',
+                      //     color: filters[attr].has(v) ? '#fff' : '#333'
+                      //   }}>
+                      //   {v}
+                      // </button>
+                      <button
+                          key={v}
+                          onClick={() => toggleFilter(attr, v)}
+                          style={ filters[attr].has(v) ? buttonPrimary : buttonStyle }
+                          onMouseEnter={e => {
+                            if (filters[attr].has(v)) Object.assign(e.target.style, buttonPrimaryHover);
+                          }}
+                          onMouseLeave={e => {
+                            if (filters[attr].has(v)) Object.assign(e.target.style, buttonPrimary);
+                          }}
+                        >
+                          {v}
                       </button>
                     ))}
                   </div>
@@ -384,7 +475,8 @@ export default function SiteMap() {
             )}
 
             <button onClick={() => setSelectedBuildingDocId(null)}
-              style={{ ...buttonStyle, background: '#ddd', color: '#333' }}>
+              // style={{ ...buttonStyle, background: '#ddd', color: '#333' }}>
+              style={buttonStyle}>
               Back
             </button>
           </>
@@ -434,12 +526,18 @@ export default function SiteMap() {
                 onClick={() => setSelectedPeriod(active ? null : seg.id)}
                 onMouseEnter={() => setHoveredSegment(seg.id)}
                 onMouseLeave={() => setHoveredSegment(null)}
+                // style={{
+                //   width: `${((seg.end - seg.start)/TOTAL_SPAN)*100}%`,
+                //   borderLeft: '1px solid #888',
+                //   background: active ? activeColor : inactiveColor,
+                //   cursor: 'pointer'
+                // }}
                 style={{
-                  width: `${((seg.end - seg.start)/TOTAL_SPAN)*100}%`,
-                  borderLeft: '1px solid #888',
-                  background: active ? activeColor : inactiveColor,
-                  cursor: 'pointer'
-                }}
+                   flex: (seg.end - seg.start) / TOTAL_SPAN,
+                   borderLeft: '1px solid var(--color-border)',
+                   background: active ? activeColor : inactiveColor,
+                   cursor: 'pointer'
+                 }}
               />
             );
           })}

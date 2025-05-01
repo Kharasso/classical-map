@@ -1854,7 +1854,9 @@
           {
             "id": "North Peristyle",
             "order": [
-              "Doric and Corinthian"
+              "Doric and Corinthian",
+              "Doric",
+              "Corinthian"
             ],
             "morphology": [
               "peristyle"
@@ -5115,8 +5117,9 @@
           {
             "id": "Royal Stoa",
             "order": [
-              "Doric (outer)",
-              "Ionic (inner)"
+              "Doric (outer), Ionic (inner)",
+              "Doric",
+              "Ionic"
             ],
             "morphology": [
               "linear",
@@ -6016,7 +6019,9 @@
           {
             "id": "South Stoa",
             "order": [
-              "Doric and Ionic"
+              "Doric and Ionic",
+              "Doric",
+              "Ionic"
             ],
             "morphology": [
               "linear",
@@ -7483,8 +7488,9 @@
           {
             "id": "North Agora Stoa",
             "order": [
-              "Ionic exterior",
-              "Corinthian interior"
+              "Ionic exterior and Corinthian interior",
+              "Ionic",
+              "Corinthian"
             ],
             "morphology": [
               "linear",
@@ -12250,8 +12256,9 @@
           {
             "id": "Stoa of Attalos",
             "order": [
-              "Doric (outer)",
-              "Ionic (inner)"
+              "Doric (outer), Ionic (inner)",
+              "Doric",
+              "Ionic"
             ],
             "morphology": [
               "linear",
@@ -44602,7 +44609,9 @@
           {
             "id": "Rhodian Peristyle Quadriporticus",
             "order": [
-              "Ionic and Doric"
+              "Doric and Ionic",
+              "Doric",
+              "Ionic"
             ],
             "morphology": [
               "peristyle quadriporticus with Ionic colonnade on north and Doric porticoes on other sides"

@@ -62754,36 +62754,6 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          43.373,
-          38.292
-        ]
-      },
-      "properties": {
-        "site": "Çavuştepe",
-        "buildings": [
-          {
-            "id": "Temple",
-            "order": [],
-            "morphology": [],
-            "age": [],
-            "date": [
-              "Urartian"
-            ],
-            "doc_id": "jstor-503480",
-            "url": "http://www.jstor.org/stable/503480",
-            "style_evidence": [],
-            "date_evidence": [
-              "only the S part (37.00 x 10.30 m.) is of Urartian date"
-            ]
-          }
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
           -7.907219301576257,
           38.57281684760565
         ]
